@@ -9,8 +9,13 @@ class TodosController extends Controller
 {
     public function index()
     {
-        $todos = Todo::all();
-        return view('todos')->with('todos', $todos);
+        $todo_completed = Todo::latest()->where('completed', true)->get();
+        $todo_incomplete = Todo::latest()->where('completed', false)->get();
+
+        return view('todos')->with([
+            'completed' => $todo_completed, 
+            'incompleted' => $todo_incomplete
+            ]);
     }
     public function store(Request $request)
     {
